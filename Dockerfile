@@ -8,6 +8,8 @@ RUN gradle build
 FROM openjdk:8-jre-slim
 WORKDIR /usr/app
 COPY --from=build /app/build/libs/my-app-1.0-SNAPSHOT.jar /usr/app/
+RUN gradle build
+RUN ls -la /app/build/libs/  # List files in the build/libs directory to confirm JAR location
 
 EXPOSE 8080
 CMD ["java", "-jar", "my-app-1.0-SNAPSHOT.jar"]

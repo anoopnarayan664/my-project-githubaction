@@ -19,6 +19,9 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
+    - name: Build project with Gradle (with stacktrace and debug)
+      run: ./gradlew build --stacktrace --debug  # or --info if preferred
+
     - name: Build project
       run: ./gradlew build
 

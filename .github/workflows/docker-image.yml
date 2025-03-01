@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4  # Check out the repository
 
     - name: Log into Docker
       uses: docker/login-action@v2
@@ -19,18 +19,11 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Build project with Gradle (with stacktrace and debug)
-      run: ./gradlew build --stacktrace --debug  # or --info if preferred
+    - name: Build project with Gradle
+      run: ./gradlew build  # Builds the project
 
-    - name: Build project
-      run: ./gradlew build
+    - name: Build Docker image
+      run: docker build -t anoopri/my-app:${{ github.sha }} .  # Build Docker image using the commit SHA as tag
 
-    - name: Build and push Docker image
-      uses: mr-smithers-excellent/docker-build-push@v4
-      with:
-        image: anoopri/my-app
-        registry: docker.io
-        tags: |
-          latest
-          ${{ github.sha }}  # Tag with commit SHA for unique identification
-
+    - name: Push Docker image
+      run: docker push anoopri/my-app:${{ github.sha }}  # Push Docker image to Docker Hub

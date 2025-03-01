@@ -28,5 +28,10 @@ jobs:
       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
 
     - name: Push the Docker image to Docker Hub
-      run: docker push my-image-name:$(date +%s)
+      uses: mr-smithers-excellent/docker-build-push@v4
+      with:
+        image: anoopri/my-app
+        registry: docker.io
       
+    - name: Build and Push Docker Image
+      run: docker push my-image-name:$(date +%s)
